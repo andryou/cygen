@@ -12,24 +12,16 @@ if (!localStorage['reset']) {
 if (!localStorage['len']) {
 	localStorage['len'] = Aes.Ctr.encrypt('10', 256);
 }
-if (!localStorage['time'] && (localStorage['master'] === undefined || localStorage['master'] == '')) {
+if (localStorage['master'] === undefined || localStorage['master'] == '') {
 	chrome.tabs.create({url: chrome.extension.getURL('html/options.html')});
-}
-if (!localStorage['version']) {
-	localStorage['master'] = '';
-	localStorage['stealth'] = '';
-	localStorage['reset'] = Aes.Ctr.encrypt('86400000', 256);
-	localStorage['len'] = Aes.Ctr.encrypt('10', 256);
-	alert('Due to an update that increases the security of Cygen, the Options page will now open where you will need to re-configure Cygen to match your previous settings.\r\nMy apologies for any inconvenience!');
-	chrome.tabs.create({url: chrome.extension.getURL('html/options.html')});
-	if (localStorage['time']) delete localStorage['time'];
 }
 
-localStorage['version'] = Aes.Ctr.encrypt('1.0.1.0', 256);
+localStorage['version'] = Aes.Ctr.encrypt('1.0.1.4', 256);
 
 chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
-	if (sender.id != 'diloniiblgloigeffddhmjkhiijjmjpk') { // make sure no other Chrome extensions get any funny ideas and try to access your encrypted data
-		// && sender.id != 'dhhigimmoheajpllplpfnencpjnfdneg' && sender.id != 'fpidjgafllhjgcbedlcpfcpdomeheiao'
+	if (sender.id != 'diloniiblgloigeffddhmjkhiijjmjpk' && sender.id != 'dhhigimmoheajpllplpfnencpjnfdneg' && sender.id != 'fpidjgafllhjgcbedlcpfcpdomeheiao' && sender.id != 'jmfkephokdjjlmlelajbgngbcmmpdbpi') {
+	// make sure no other Chrome extensions get any funny ideas and try to access your encrypted data
+		// && sender.id != 'dhhigimmoheajpllplpfnencpjnfdneg' && sender.id != 'fpidjgafllhjgcbedlcpfcpdomeheiao' && sender.id != 'jmfkephokdjjlmlelajbgngbcmmpdbpi'
 		return;
 	} else {
 		if (request.action == 'getCode') {
